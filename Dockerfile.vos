@@ -1,0 +1,20 @@
+FROM openlink/vos_base:v0
+
+ENV VIRT_HOME /opt/virtuoso-opensource
+ENV VIRT_DB /opt/virtuoso-opensource/var/lib/virtuoso/db
+
+RUN export PATH=$PATH:/opt/virtuoso-opensource/bin
+
+RUN addgroup --system virtuoso && adduser --system --ingroup virtuoso virtuoso
+
+EXPOSE 1111
+EXPOSE 8890
+
+WORKDIR $VIRT_DB
+
+RUN chown -R virtuoso $VIRT_DB
+RUN chmod -R g+w $VIRT_DB
+
+USER virtuoso
+
+CMD /opt/virtuoso-opensource/bin/virtuoso-t -f
